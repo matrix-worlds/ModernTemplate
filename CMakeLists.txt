@@ -38,6 +38,7 @@ add_library(moderncommon
   src/MySqlConnection.cpp
   src/WidgetTable.cpp
   src/CallProtocol.cpp
+  src/SipTransaction.cpp
 )
 target_include_directories(moderncommon PUBLIC ${MYSQL_INCLUDE_DIR})
 target_link_libraries(moderncommon PUBLIC Threads::Threads ${MYSQL_LIBRARY})
@@ -104,3 +105,14 @@ add_test(NAME ProtocolTest COMMAND test_Protocol)
 add_executable(test_CallProtocol test/test_CallProtocol.cpp)
 target_link_libraries(test_CallProtocol moderncommon)
 add_test(NAME CallProtocolTest COMMAND test_CallProtocol)
+
+# --- SIP (RFC 3261) -----------------------------------------------------
+# No MySQL involved; see doc/sip.md.
+
+add_executable(test_SipMessage test/test_SipMessage.cpp)
+target_link_libraries(test_SipMessage moderncommon)
+add_test(NAME SipMessageTest COMMAND test_SipMessage)
+
+add_executable(test_SipTransaction test/test_SipTransaction.cpp)
+target_link_libraries(test_SipTransaction moderncommon)
+add_test(NAME SipTransactionTest COMMAND test_SipTransaction)
