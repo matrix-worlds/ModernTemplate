@@ -116,3 +116,8 @@ add_test(NAME SipMessageTest COMMAND test_SipMessage)
 add_executable(test_SipTransaction test/test_SipTransaction.cpp)
 target_link_libraries(test_SipTransaction moderncommon)
 add_test(NAME SipTransactionTest COMMAND test_SipTransaction)
+
+# Runnable console demo (not a test): prints the RFC 3261 SS17.1.1
+# message flow for three call scenarios. `./demo_SipCall` to run.
+add_executable(demo_SipCall src/demo_SipCall.cpp)
+target_link_libraries(demo_SipCall moderncommon)
