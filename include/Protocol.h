@@ -2,36 +2,17 @@
 //
 // Protocol.h
 //
-// ProtocolStateMachine<S, MessageBase>: a NEW template, not a port --
-// isdx has nothing like it. This is the answer to "what else could be
-// template-ized" that motivated this file: isdx generalized "a state
-// machine that holds a current state" into ISDX::StateMachine<S>
-// (StateMachine.h) exactly once, but never generalized "a state machine
-// whose transitions are driven by incoming protocol messages" -- every
-// protocol re-implements that by hand, independently, at least eight
-// times in isdx/src/lib:
-//
-//   SipConnectionStateMachine   (isdxplat)
-//   ISUPCircuitStateMachine     (isdxplat)
-//   ATMCircuitStateMachine      (isdxplat)
-//   TIMMediaStateMachine        (isdxplat)
-//   MediaSessionStateMachine    (isdxmgc)
-//   MGCSEndpointStateMachine    (isdxmgc)
-//   MGCSChannelStateMachine     (isdxmgc)
-//   TrunkInterfaceStateMachine  (isdxplat)
-//
-// Concretely, e.g. SipConnectionStateMachine (isdxplat/include/
-// SipConnectionStateMachine.h) hand-declares one virtual method per PFA
-// message type -- handlePFASetupMsg(), handlePFASetupAckMsg(),
-// handlePFASetupNackMsg(), handlePFAStatusMsg(), handlePFATeardownMsg(),
-// handlePFATeardownAckMsg() -- and each concrete state subclass
-// (SipConnectionIdleState, SipConnectionSetupState, ...) overrides
-// whichever of those six methods apply to *that* state, silently
-// inheriting a no-op for the rest. The (state x message-type) dispatch
-// table this describes exists only implicitly, spread across N state
-// subclasses' vtables; there's no single place that lists it, and
-// nothing catches a typo'd or forgotten combination at compile time --
-// only a missing override silently doing nothing at runtime.
+// ProtocolStateMachine<S, MessageBase>: a state machine whose
+// transitions are driven by incoming protocol messages. A naive
+// implementation of "dispatch this message type in this state to this
+// behavior" tends to end up as one virtual method per message type,
+// overridden per state subclass -- each state overrides whichever
+// methods apply to it and silently inherits a no-op for the rest. The
+// (state x message-type) dispatch table that describes only exists
+// implicitly then, spread across every state subclass's vtable: there's
+// no single place to read it, and nothing catches a missing or typo'd
+// combination at compile time -- only a missing override silently doing
+// nothing at runtime.
 //
 // ProtocolStateMachine<S, MessageBase> makes that table an actual,
 // explicit, inspectable value: a std::map<(state, message-type),
@@ -40,13 +21,12 @@
 // in which states" becomes a question you can answer by reading the
 // registration calls in one place (see CallProtocol.cpp for a worked
 // example) or, at runtime, by calling getTransitionTableSize() -- rather
-// than by reading N state subclasses' worth of overridden virtuals.
+// than by reading every state subclass's worth of overridden virtuals.
 //
 // The message-type key is std::type_index(typeid(msg)) -- the concrete
-// C++ type of the message stands in for isdx's hand-assigned message
-// codes (e.g. IsupMsgCode, isdxisup/include/IsupDefs.h), so no protocol
-// needs to invent and maintain its own message-type enum just to make
-// messages identifiable; RTTI already provides a unique, collision-free
+// C++ type of the message identifies it, so no protocol needs to invent
+// and maintain its own message-type enum just to make messages
+// identifiable; RTTI already provides a unique, collision-free
 // identifier for every concrete Message subclass.
 
 #ifndef MODERNTEMPLATE_PROTOCOL_H

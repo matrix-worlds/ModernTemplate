@@ -3,8 +3,7 @@
 // test_State.cpp
 //
 // Exercises State -- see State.h for the design rationale (protected
-// constructor instead of isdx's pure-virtual-destructor trick, no
-// operator==/!=, singleton-state recommendation).
+// constructor, no operator==/!=, singleton-state recommendation).
 
 #include "MiniTest.h"
 #include "State.h"

@@ -3,8 +3,8 @@
 // test_Message.cpp
 //
 // Exercises Message/MessageHandle -- see Message.h for the design
-// rationale (std::shared_ptr + std::dynamic_pointer_cast replacing
-// isdx's hand-written MsgHandleTemplate<C>).
+// rationale (std::shared_ptr + std::dynamic_pointer_cast, no separate
+// typesafe handle wrapper needed).
 
 #include "MiniTest.h"
 #include "Message.h"
@@ -44,8 +44,8 @@ namespace {
     MT_CHECK(t, h->getName() == "Ping");
   }
 
-  /// dynamic_pointer_cast<ConcreteMsg> is what replaces isdx's
-  /// MsgHandleTemplate<ConcreteMsg>::getPtr() -- see the file comment.
+  /// dynamic_pointer_cast<ConcreteMsg> is the typesafe downcast for a
+  /// MessageHandle -- see the file comment.
   void test_dynamicPointerCastToConcreteTypeSucceeds(MiniTest& t)
   {
     MessageHandle h = std::make_shared<PingMessage>(42);

@@ -2,10 +2,9 @@
 //
 // CallProtocol.cpp
 //
-// See CallProtocol.h. This is the "one place that lists the whole
-// transition table" Protocol.h's file comment contrasts with isdx's
-// approach of spreading the same information across N state subclasses'
-// overridden virtuals.
+// See CallProtocol.h. This constructor is the whole transition table,
+// readable top to bottom -- the point of Protocol.h's design (see that
+// file's comment).
 
 #include "CallProtocol.h"
 #include <stdexcept>

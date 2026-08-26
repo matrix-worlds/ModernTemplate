@@ -44,8 +44,8 @@ namespace ModernCommon {
    * StateMachine
    *
    * Generic state machine driver: holds a pointer to the current state
-   * (nullptr = "undefined", the same convention isdx used) and runs the
-   * onExit()/onEntry() hooks around every setCurrentState() call.
+   * (nullptr means "undefined") and runs the onExit()/onEntry() hooks
+   * around every setCurrentState() call.
    */
   template<class S>
     requires DerivedFromState<S>
@@ -65,10 +65,9 @@ namespace ModernCommon {
     /// Transitions to `state` (nullptr is valid: it means "no current
     /// state"). Runs, in order: the old state's onExit(), the transition
     /// observer (if any), the actual pointer swap, then the new state's
-    /// onEntry() -- the same sequence isdx's StateMachine<S>::
-    /// setCurrentState() used, so onEntry()/onExit() overrides that
-    /// change the current state again as part of their action behave the
-    /// same way here as they did there.
+    /// onEntry() -- so onEntry()/onExit() overrides that change the
+    /// current state again as part of their action still behave
+    /// predictably.
     void setCurrentState(const S* state)
     {
       static const std::string kUndefined = "UNDEFINED_STATE";

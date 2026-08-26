@@ -3,8 +3,7 @@
 // test_StateMachine.cpp
 //
 // Exercises StateMachine<S> -- see StateMachine.h for the design
-// rationale (const S* current state, TransitionObserver replacing
-// isdx's hardcoded ISDX_LOG transition logging).
+// rationale (const S* current state, injectable TransitionObserver).
 
 #include "MiniTest.h"
 #include "State.h"

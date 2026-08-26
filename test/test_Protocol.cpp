@@ -4,9 +4,8 @@
 //
 // Exercises ProtocolStateMachine<S,MessageBase> directly, with small
 // throwaway state/message types -- see Protocol.h for the design
-// rationale (a real, inspectable (state, message-type) -> handler table,
-// generalizing what isdx's real protocol state machines each hand-write
-// as N virtual methods per protocol).
+// rationale (a real, inspectable (state, message-type) -> handler
+// table).
 
 #include "MiniTest.h"
 #include "Message.h"

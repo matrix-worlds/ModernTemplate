@@ -31,9 +31,9 @@ namespace ModernCommon {
     Message() = default;
   };
 
-  /// A reference-counted handle to a heap-allocated Message. Plain
-  /// std::shared_ptr -- see the file comment for why no
-  /// MsgHandleTemplate<C>-shaped wrapper is needed alongside it.
+  /// A reference-counted handle to a heap-allocated Message. Downcasting
+  /// to a concrete message type is std::dynamic_pointer_cast<ConcreteMsg>
+  /// -- no separate typesafe handle wrapper needed.
   using MessageHandle = std::shared_ptr<Message>;
 
 } // namespace ModernCommon

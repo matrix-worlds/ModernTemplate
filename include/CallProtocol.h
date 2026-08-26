@@ -3,10 +3,8 @@
 // CallProtocol.h
 //
 // A worked example of State.h/StateMachine.h/Message.h/Protocol.h
-// working together: a minimal call-setup protocol, in the same spirit
-// as isdx's real SipConnectionStateMachine/ISUPCircuitStateMachine (see
-// Protocol.h's file comment) but reduced to the essentials --
-// three states, three message types, four transitions:
+// working together: a minimal call-setup protocol, reduced to the
+// essentials -- three states, three message types, four transitions:
 //
 //   Idle --Setup--> Ringing --Answer--> Connected
 //   Ringing --Release--> Idle
@@ -15,17 +13,12 @@
 // Any other message received in a given state (e.g. a second Setup
 // while already Ringing) is a protocol violation: CallProtocol's
 // constructor registers an onUnhandled() hook (Protocol.h) that throws
-// std::logic_error naming the offending state and message, rather than
-// silently doing nothing the way an isdx state subclass that didn't
-// override the corresponding handleXXXMsg() would.
+// std::logic_error naming the offending state and message.
 //
 // States are Meyers singletons (State.h's recommended pattern): there is
 // exactly one CallIdleState, one CallRingingState, one
 // CallConnectedState for the whole process, shared by every CallProtocol
-// instance -- correct because none of them carry any per-call data, the
-// same as isdx's real SipConnectionIdleState/SipConnectionSetupState/...
-// (see doc/state-protocol.md for the isdx source read that established
-// this).
+// instance -- correct because none of them carry any per-call data.
 
 #ifndef MODERNTEMPLATE_CALLPROTOCOL_H
 #define MODERNTEMPLATE_CALLPROTOCOL_H

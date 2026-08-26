@@ -52,10 +52,9 @@ namespace ModernCommon {
 
   /// Constraint used by StateMachine<S> (StateMachine.h) and
   /// ProtocolStateMachine<S,MessageBase> (Protocol.h): S must derive from
-  /// State. A real (if minor) improvement on isdx, where nothing stopped
-  /// `StateMachine<SomeUnrelatedType>` from being written and failing,
-  /// confusingly, only once setCurrentState() tried to call getName() on
-  /// it.
+  /// State. Without this, `StateMachine<SomeUnrelatedType>` would compile
+  /// and fail only later, confusingly, once setCurrentState() tried to
+  /// call getName() on it.
   template<class S>
   concept DerivedFromState = std::is_base_of_v<State, S>;
 
