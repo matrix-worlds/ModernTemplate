@@ -37,6 +37,7 @@ add_library(moderncommon
   src/Dump.cpp
   src/MySqlConnection.cpp
   src/WidgetTable.cpp
+  src/CallProtocol.cpp
 )
 target_include_directories(moderncommon PUBLIC ${MYSQL_INCLUDE_DIR})
 target_link_libraries(moderncommon PUBLIC Threads::Threads ${MYSQL_LIBRARY})
@@ -80,3 +81,26 @@ add_test(NAME CacheDataTest COMMAND test_CacheData)
 add_executable(test_Integration test/test_Integration.cpp)
 target_link_libraries(test_Integration moderncommon)
 add_test(NAME IntegrationTest COMMAND test_Integration)
+
+# --- State / StateMachine / Message / Protocol ------------------------
+# No MySQL involved; see doc/state-protocol.md.
+
+add_executable(test_State test/test_State.cpp)
+target_link_libraries(test_State moderncommon)
+add_test(NAME StateTest COMMAND test_State)
+
+add_executable(test_StateMachine test/test_StateMachine.cpp)
+target_link_libraries(test_StateMachine moderncommon)
+add_test(NAME StateMachineTest COMMAND test_StateMachine)
+
+add_executable(test_Message test/test_Message.cpp)
+target_link_libraries(test_Message moderncommon)
+add_test(NAME MessageTest COMMAND test_Message)
+
+add_executable(test_Protocol test/test_Protocol.cpp)
+target_link_libraries(test_Protocol moderncommon)
+add_test(NAME ProtocolTest COMMAND test_Protocol)
+
+add_executable(test_CallProtocol test/test_CallProtocol.cpp)
+target_link_libraries(test_CallProtocol moderncommon)
+add_test(NAME CallProtocolTest COMMAND test_CallProtocol)
