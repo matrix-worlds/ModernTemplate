@@ -33,15 +33,23 @@ endif()
 message(STATUS "MySQL include dir: ${MYSQL_INCLUDE_DIR}")
 message(STATUS "MySQL library: ${MYSQL_LIBRARY}")
 
+# --- Eigen (header-only C++ template linear algebra library) ---------
+find_package(Eigen3 REQUIRED NO_MODULE
+  HINTS /opt/homebrew/share/eigen3/cmake /opt/homebrew/opt/eigen/share/eigen3/cmake
+        /usr/local/share/eigen3/cmake
+)
+message(STATUS "Eigen3 version: ${Eigen3_VERSION}")
+
 add_library(moderncommon
   src/Dump.cpp
   src/MySqlConnection.cpp
   src/WidgetTable.cpp
   src/CallProtocol.cpp
   src/SipTransaction.cpp
+  src/ToyAttention.cpp
 )
 target_include_directories(moderncommon PUBLIC ${MYSQL_INCLUDE_DIR})
-target_link_libraries(moderncommon PUBLIC Threads::Threads ${MYSQL_LIBRARY})
+target_link_libraries(moderncommon PUBLIC Threads::Threads ${MYSQL_LIBRARY} Eigen3::Eigen)
 
 enable_testing()
 
@@ -121,3 +129,20 @@ add_test(NAME SipTransactionTest COMMAND test_SipTransaction)
 # message flow for three call scenarios. `./demo_SipCall` to run.
 add_executable(demo_SipCall src/demo_SipCall.cpp)
 target_link_libraries(demo_SipCall moderncommon)
+
+# --- Eigen / matrix operations ------------------------------------------
+# See doc/eigen-matrix.md.
+
+add_executable(test_EigenBasics test/test_EigenBasics.cpp)
+target_link_libraries(test_EigenBasics moderncommon)
+add_test(NAME EigenBasicsTest COMMAND test_EigenBasics)
+
+add_executable(test_ToyAttention test/test_ToyAttention.cpp)
+target_link_libraries(test_ToyAttention moderncommon)
+add_test(NAME ToyAttentionTest COMMAND test_ToyAttention)
+
+# Runnable console demo (not a test): prints Q/K/V and the intermediate
+# scores/weights/output matrices for a tiny attention example.
+# `./demo_Attention` to run.
+add_executable(demo_Attention src/demo_Attention.cpp)
+target_link_libraries(demo_Attention moderncommon)
